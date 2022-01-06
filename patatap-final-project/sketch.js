@@ -3,13 +3,14 @@ let animation = [];
 let num;
 const maxAnim = 6;
 
-let input, button_play, button_stop, songName, source, song;
-let currStatus = { flag: false, message: "" };
+let input, button_play, button_stop, song_name, source, song, vol, vol_slider;
+let curr_status = { flag: false, message: "" };
+let header_height = 50;
 
 async function playBtnHandler() {
     if (!song) {
-        currStatus = { flag: false, message: "Loading..." };
-        songName = input.value();
+        curr_status = { flag: false, message: "Loading..." };
+        song_name = input.value();
         input.value("");
         let audioUrl = await fetch(FETCH_URL, {
             method: "POST",
@@ -17,7 +18,7 @@ async function playBtnHandler() {
                 "Content-type": "application/json",
             },
             mode: "cors",
-            body: JSON.stringify({ query: songName + " song lyrics " }),
+            body: JSON.stringify({ query: song_name + " song lyrics " }),
         });
 
         audioUrl = await audioUrl.json();
@@ -28,9 +29,9 @@ async function playBtnHandler() {
             song = createAudio(source);
             song.play();
 
-            currStatus = { flag: true, message: "Playing..." };
+            curr_status = { flag: true, message: "Playing..." };
         } else {
-            currStatus = { flag: true, message: "Song not found" };
+            curr_status = { flag: false, message: "Song not found" };
         }
     } else {
         window.alert("Stop the song first!");
@@ -41,11 +42,10 @@ function stopBtnHandler() {
     if (song) {
         song.stop();
         song = null;
-        currStatus = { flag: false, message: "" };
+        curr_status = { flag: false, message: "" };
     } else {
         window.alert("No song playing now");
     }
-
 }
 
 function preload() {
@@ -71,20 +71,26 @@ function setup() {
     button_stop = createButton("Stop");
     button_stop.position(input.x + input.width, input.height);
     button_stop.mousePressed(stopBtnHandler);
+
+    vol_slider = createSlider(0.0,1.0,1.0,0.1);
+    vol_slider.position(input.x + 300, 25);
+    vol_slider.style('width','100px');
 }
 
 function draw() {
     background(0);
 
-    // if (!currStatus.flag) {
-    //     textSize(32);
-    //     fill(255);
-    //     text(currStatus.message, 0, 100);
-    // }
-
-    textSize(32);
+    // show status on screen
+    textSize(20);
     fill(255);
-    text(currStatus.message, 0, 100);
+    text(curr_status.message, 0, header_height);
+
+    // volume slider
+    text("Volume", input.x + 300, 20);
+    if(song){
+        vol = vol_slider.value();
+        song.volume(vol);
+    }
 
     if (animation.length > 0) {
         for (let i = 0; i < animation.length; i++) {
