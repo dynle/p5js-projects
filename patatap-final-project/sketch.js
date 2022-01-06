@@ -60,18 +60,22 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    // Create an input
     input = createInput().attribute("placeholder", "Type Song + Singer");
     input.size(200);
     input.position(0, 0);
 
+    // Create a play button
     button_play = createButton("Play");
     button_play.position(input.x + input.width, 0);
     button_play.mousePressed(playBtnHandler);
 
+    // Create a stop button
     button_stop = createButton("Stop");
     button_stop.position(input.x + input.width, input.height);
     button_stop.mousePressed(stopBtnHandler);
 
+    // Create a volumn slider
     vol_slider = createSlider(0.0,1.0,1.0,0.1);
     vol_slider.position(input.x + 300, 25);
     vol_slider.style('width','100px');
@@ -80,12 +84,12 @@ function setup() {
 function draw() {
     background(0);
 
-    // show status on screen
+    // Show status on screen
     textSize(20);
     fill(255);
     text(curr_status.message, 0, header_height);
 
-    // volume slider
+    // Control the volume slider
     text("Volume", input.x + 300, 20);
     if(song){
         vol = vol_slider.value();
