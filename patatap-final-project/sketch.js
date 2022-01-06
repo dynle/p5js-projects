@@ -7,36 +7,45 @@ let input, button_play, button_stop, songName, source, song;
 let currStatus = { flag: false, message: "" };
 
 async function playBtnHandler() {
-    currStatus = { flag: false, message: "Loading..." };
-    songName = input.value();
-    input.value("");
-    let audioUrl = await fetch(FETCH_URL, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json",
-        },
-        mode: "cors",
-        body: JSON.stringify({ query: songName + " song lyrics " }),
-    });
+    if (!song) {
+        currStatus = { flag: false, message: "Loading..." };
+        songName = input.value();
+        input.value("");
+        let audioUrl = await fetch(FETCH_URL, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({ query: songName + " song lyrics " }),
+        });
 
-    audioUrl = await audioUrl.json();
+        audioUrl = await audioUrl.json();
 
-    if (audioUrl.data) {
-        source = audioUrl.data;
+        if (audioUrl.data) {
+            source = audioUrl.data;
 
-        song = createAudio(source);
-        song.play();
+            song = createAudio(source);
+            song.play();
 
-        currStatus = { flag: true, message: "Playing..." };
+            currStatus = { flag: true, message: "Playing..." };
+        } else {
+            currStatus = { flag: true, message: "Song not found" };
+        }
     } else {
-        currStatus = { flag: true, message: "Song not found" };
+        window.alert("Stop the song first!");
     }
 }
 
 function stopBtnHandler() {
-    song.stop();
-    song = null;
-    currStatus = {flag:false, message: ""};
+    if (song) {
+        song.stop();
+        song = null;
+        currStatus = { flag: false, message: "" };
+    } else {
+        window.alert("No song playing now");
+    }
+
 }
 
 function preload() {
@@ -51,7 +60,7 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    input = createInput().attribute('placeholder','Type Song + Singer');
+    input = createInput().attribute("placeholder", "Type Song + Singer");
     input.size(200);
     input.position(0, 0);
 
@@ -108,106 +117,5 @@ function keyTyped() {
         if (animation.length > maxAnim) {
             animation.splice(1, 1);
         }
-    }
-}
-
-// Animation A
-class Anim_a {
-    constructor() {
-        this.x = width / 2;
-        this.y = height / 2;
-        this.diameter = 0;
-        this.alpha = 255;
-    }
-    draw() {
-        noStroke();
-        fill(0, 127, 255, this.alpha);
-        ellipse(this.x, this.y, this.diameter, this.diameter);
-        this.diameter += 10;
-        this.alpha *= 0.99;
-    }
-}
-
-// Animation S
-class Anim_s {
-    constructor() {
-        this.width = 0;
-        this.speed = 80;
-        this.alpha = 255;
-    }
-    draw() {
-        noStroke();
-        fill(255, 0, 0, this.alpha);
-        rectMode(CORNER);
-        rect(0, 0, this.width, height);
-        this.width += this.speed;
-        this.alpha *= 0.99;
-    }
-}
-
-// Animation D
-class Anim_d {
-    constructor() {
-        this.rotate = 0;
-        this.size = width;
-        this.speed = 5;
-    }
-    draw() {
-        push();
-        fill(255, 255, 0);
-        noStroke();
-        translate(width / 2, height / 2);
-        rotate(radians(this.rotate));
-        rectMode(CENTER);
-        rect(0, 0, this.size, this.size);
-        pop();
-        this.rotate += this.speed;
-        this.size *= 0.95;
-    }
-}
-
-// Animation F
-class Anim_f {
-    constructor() {
-        this.alpha = 255;
-    }
-    draw() {
-        noStroke();
-        fill(0, 255, 255, this.alpha);
-        rect(0, 0, width, height);
-        this.alpha -= 5;
-    }
-}
-
-// Animation G
-class Anim_g {
-    constructor() {
-        this.posy = height + 50;
-    }
-    draw() {
-        noStroke();
-        fill(255);
-        rect(0, this.posy - 50, width, 50);
-        rect(0, height - this.posy, width, 50);
-        this.posy *= 0.9;
-    }
-}
-
-// Animation H
-class Anim_h {
-    constructor() {
-        this.width = width;
-        this.height = height;
-    }
-    draw() {
-        stroke(255);
-        strokeWeight(20);
-        noFill();
-        rectMode(CENTER);
-        rect(width / 2, height / 2, this.width, this.height);
-        this.width *= 0.7;
-        this.height *= 0.7;
-        rectMode(CORNER);
-        strokeWeight(1);
     }
 }
