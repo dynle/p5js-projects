@@ -3,22 +3,24 @@ let animation = [];
 let num;
 const maxAnim = 6;
 
-let input, button_play, button_stop, song_name, source, song, vol, vol_slider;
+let input, button_play, button_stop, music_name, source, music, vol, vol_slider;
 let curr_status = { flag: false, message: "" };
 let header_height = 50;
 
 async function playBtnHandler() {
-    if (!song) {
+    if (!music) {
         curr_status = { flag: false, message: "Loading..." };
-        song_name = input.value();
+        music_name = input.value();
         input.value("");
+
+        // Fetch music data from API
         let audioUrl = await fetch(FETCH_URL, {
             method: "POST",
             headers: {
                 "Content-type": "application/json",
             },
             mode: "cors",
-            body: JSON.stringify({ query: song_name + " song lyrics " }),
+            body: JSON.stringify({ query: music_name + " music lyrics " }),
         });
 
         audioUrl = await audioUrl.json();
@@ -26,25 +28,26 @@ async function playBtnHandler() {
         if (audioUrl.data) {
             source = audioUrl.data;
 
-            song = createAudio(source);
-            song.play();
+            music = createAudio(source);
+            music.play();
+            music.onended(stopBtnHandler);
 
-            curr_status = { flag: true, message: "Playing..." };
+            curr_status = { flag: true, message: "Playing" };
         } else {
-            curr_status = { flag: false, message: "Song not found" };
+            curr_status = { flag: false, message: "music not found" };
         }
     } else {
-        window.alert("Stop the song first!");
+        window.alert("Stop the music first!");
     }
 }
 
 function stopBtnHandler() {
-    if (song) {
-        song.stop();
-        song = null;
+    if (music) {
+        music.stop();
+        music = null;
         curr_status = { flag: false, message: "" };
     } else {
-        window.alert("No song playing now");
+        window.alert("No music playing now");
     }
 }
 
@@ -61,7 +64,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     // Create an input
-    input = createInput().attribute("placeholder", "Type Song + Singer");
+    input = createInput().attribute("placeholder", "Type Music & Artist");
     input.size(200);
     input.position(0, 0);
 
@@ -76,9 +79,9 @@ function setup() {
     button_stop.mousePressed(stopBtnHandler);
 
     // Create a volumn slider
-    vol_slider = createSlider(0.0,1.0,1.0,0.1);
+    vol_slider = createSlider(0.0, 1.0, 1.0, 0.1);
     vol_slider.position(input.x + 300, 25);
-    vol_slider.style('width','100px');
+    vol_slider.style("width", "100px");
 }
 
 function draw() {
@@ -91,9 +94,9 @@ function draw() {
 
     // Control the volume slider
     text("Volume", input.x + 300, 20);
-    if(song){
+    if (music) {
         vol = vol_slider.value();
-        song.volume(vol);
+        music.volume(vol);
     }
 
     if (animation.length > 0) {
@@ -104,7 +107,7 @@ function draw() {
 }
 
 function keyTyped() {
-    if (song) {
+    if (music) {
         if (key == "a") {
             sample[0].play();
             animation.push(new Anim_a());
