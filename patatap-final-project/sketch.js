@@ -52,12 +52,21 @@ function stopBtnHandler() {
 }
 
 function preload() {
-    sample[0] = loadSound("./se01.wav");
-    sample[1] = loadSound("./se02.wav");
-    sample[2] = loadSound("./se03.wav");
-    sample[3] = loadSound("./se04.wav");
-    sample[4] = loadSound("./se05.wav");
-    sample[5] = loadSound("./se06.wav");
+    sample[0] = loadSound("./sounds/se01.wav");
+    sample[1] = loadSound("./sounds/se02.wav");
+    sample[2] = loadSound("./sounds/se03.wav");
+    sample[3] = loadSound("./sounds/se04.wav");
+    sample[4] = loadSound("./sounds/se05.wav");
+    sample[5] = loadSound("./sounds/se06.wav");
+    sample[6] = loadSound("./sounds/se07.wav");
+    sample[7] = loadSound("./sounds/se08.wav");
+    sample[8] = loadSound("./sounds/se09.wav");
+    sample[9] = loadSound("./sounds/se10.wav");
+    sample[10] = loadSound("./sounds/se11.wav");
+    sample[11] = loadSound("./sounds/se12.wav");
+
+
+
 }
 
 function setup() {
@@ -107,7 +116,7 @@ function draw() {
 }
 
 function keyTyped() {
-    if (music) {
+    // if (music) {
         if (key == "a") {
             sample[0].play();
             animation.push(new Anim_a());
@@ -120,15 +129,33 @@ function keyTyped() {
         } else if (key == "f") {
             sample[3].play();
             animation.push(new Anim_f());
-        } else if (key == "g") {
+        } else if (key == "q") {
             sample[4].play();
-            animation.push(new Anim_g());
-        } else if (key == "h") {
+            animation.push(new Anim_q());
+        } else if (key == "w") {
             sample[5].play();
-            animation.push(new Anim_h());
-        }
+            animation.push(new Anim_w());
+        } else if (key == "e") {
+            sample[6].play();
+            animation.push(new Anim_e());
+        } else if (key == "r") {
+            sample[7].play();
+            animation.push(new Anim_r());
+        } else if (key == "z") {
+            sample[8].play();
+            animation.push(new Anim_z());
+        } else if (key == "x") {
+            sample[9].play();
+            animation.push(new Anim_x());
+        } else if (key == "c") {
+            sample[10].play();
+            animation.push(new Anim_c());
+        } else if (key == "v") {
+            sample[11].play();
+            animation.push(new Anim_v());
+        } 
         if (animation.length > maxAnim) {
             animation.splice(1, 1);
         }
-    }
+    // }
 }

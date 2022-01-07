@@ -1,17 +1,17 @@
 // Animation A
 class Anim_a {
     constructor() {
-        this.x = width / 2;
-        this.y = height / 2;
+        this.x = random(width);
+        this.y = random(height);
         this.diameter = 0;
         this.alpha = 255;
     }
     draw() {
         noStroke();
-        fill(0, 127, 255, this.alpha);
+        fill(255, 255, 0, this.alpha);
         ellipse(this.x, this.y, this.diameter, this.diameter);
         this.diameter += 10;
-        this.alpha *= 0.99;
+        this.alpha *= 0.9;
     }
 }
 
@@ -66,8 +66,8 @@ class Anim_f {
     }
 }
 
-// Animation G
-class Anim_g {
+// Animation Q
+class Anim_q {
     constructor() {
         this.posy = height + 50;
     }
@@ -80,8 +80,8 @@ class Anim_g {
     }
 }
 
-// Animation H
-class Anim_h {
+// Animation W
+class Anim_w {
     constructor() {
         this.width = width;
         this.height = height;
@@ -96,5 +96,79 @@ class Anim_h {
         this.height *= 0.7;
         rectMode(CORNER);
         strokeWeight(1);
+    }
+}
+
+// Animation E
+class Anim_e {
+    constructor() {
+        this.posy = height + 50;
+    }
+    draw() {
+        noStroke();
+        fill(127, 255, 212);
+        rect(0, this.posy - 50, width, 50);
+        rect(0, height - this.posy, width, 50);
+        this.posy *= 0.9;
+    }
+}
+
+// Animation R
+class Anim_r {
+    constructor() {
+
+    }
+    draw() {
+
+    }
+}
+
+// Animation Z
+class Anim_z {
+    constructor() {
+
+    }
+    draw() {
+
+    }
+}
+
+// Animation X
+class Anim_x {
+    constructor() {
+
+    }
+    draw() {
+
+    }
+}
+
+// Animation C
+class Anim_c {
+    constructor() {
+        this.x = width / 2;
+        this.y = height / 2;
+        this.diameter = 0;
+        this.alpha = 255;
+    }
+    draw() {
+        noStroke();
+        fill(0, 127, 255, this.alpha);
+        ellipse(this.x, this.y, this.diameter, this.diameter);
+        this.diameter += 10;
+        this.alpha *= 0.99;
+    }
+}
+
+// Animation V
+class Anim_v {
+    constructor() {
+        this.alpha = 255;
+    }
+    draw() {
+        noStroke();
+        fill(255, 255, 255, this.alpha);
+        rect(0, 0, width, height);
+        this.alpha -= 5;
     }
 }
