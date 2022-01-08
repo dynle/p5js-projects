@@ -2,10 +2,8 @@ let sample = [];
 let animation = [];
 let num;
 const maxAnim = 6;
-
-let input, button_play, button_stop, music_name, source, music, vol, vol_slider;
+let input, button_play, button_stop, music_name, source, music, vol, vol_slider, img;
 let curr_status = { flag: false, message: "" };
-let header_height = 50;
 
 async function playBtnHandler() {
     if (!music) {
@@ -65,8 +63,7 @@ function preload() {
     sample[10] = loadSound("./sounds/se11.wav");
     sample[11] = loadSound("./sounds/se12.wav");
 
-
-
+    img = loadImage('./images/keyboard.png');
 }
 
 function setup() {
@@ -74,38 +71,49 @@ function setup() {
 
     // Create an input
     input = createInput().attribute("placeholder", "Type Music & Artist");
-    input.size(200);
+    input.size(200,30);
     input.position(0, 0);
 
     // Create a play button
     button_play = createButton("Play");
+    button_play.size(60,input.height);
     button_play.position(input.x + input.width, 0);
     button_play.mousePressed(playBtnHandler);
 
     // Create a stop button
     button_stop = createButton("Stop");
+    button_stop.size(60,input.height);
     button_stop.position(input.x + input.width, input.height);
     button_stop.mousePressed(stopBtnHandler);
 
     // Create a volumn slider
-    vol_slider = createSlider(0.0, 1.0, 1.0, 0.1);
-    vol_slider.position(input.x + 300, 25);
-    vol_slider.style("width", "100px");
+    vol_slider = createSlider(0.0, 1.0, 1.0, 0.01);
+    vol_slider.position(input.x + 300, 30);
+    vol_slider.style("width", "200px");
 }
 
 function draw() {
     background(0);
 
     // Show status on screen
-    textSize(20);
+    textSize(30);
     fill(255);
-    text(curr_status.message, 0, header_height);
+    noStroke();
+    text(curr_status.message, 70, 100);
 
     // Control the volume slider
-    text("Volume", input.x + 300, 20);
+    text("Volume", input.x + 350, 20);
     if (music) {
         vol = vol_slider.value();
         music.volume(vol);
+    } else {
+        textSize(70);
+        textAlign(CENTER);
+        text("Play music to start!", windowWidth/2,windowHeight/2-100);
+        imageMode(CENTER);
+        image(img,windowWidth/2,windowHeight/2+40,500,200);
+        textSize(20);
+        text("Use Q-R, A-F, Z-V on Qwerty keyboard",windowWidth/2,windowHeight/2+170);
     }
 
     if (animation.length > 0) {
@@ -116,7 +124,7 @@ function draw() {
 }
 
 function keyTyped() {
-    // if (music) {
+    if (music) {
         if (key == "a") {
             sample[0].play();
             animation.push(new Anim_a());
@@ -153,9 +161,9 @@ function keyTyped() {
         } else if (key == "v") {
             sample[11].play();
             animation.push(new Anim_v());
-        } 
+        }
         if (animation.length > maxAnim) {
             animation.splice(1, 1);
         }
-    // }
+    }
 }
